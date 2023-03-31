@@ -91,7 +91,9 @@ export class FileRepository {
         if (files.length == 1)
         {
             const [ file ]: any[] = files;
-            fs.renameSync(file.path, this.config.uploadPath + file.filename);
+            fs.copyFile(file.path, this.config.uploadPath + file.filename, (err) => {
+                fs.unlink(file.path, (err) => {});
+            });
             return [file.filename, file.originalname];
         }
         else
